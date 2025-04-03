@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal English Quiz</title>
+    <style>
+        body {
+            text-align: center;
+            font-family:Arial, Helvetica, sans-serif;
+            background-color: #ffebf2; /* Màu hồng nền */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #quiz-container {
+            font-family: Arial, Helvetica, sans-serif;
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+            padding: 40px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffe0f0; /* Màu hồng sáng cho khung */
+        }
+        h1 {
+            font-size: 36px;
+            color: #ff4f8f;
+        }
+        h2 {
+            font-size: 28px;
+            color: #ff4f8f;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            background-color: #ff4f8f;
+            color: white;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff3b7f;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Animal English Quiz</h1>
+        <div id="quiz"></div>
+        <p id="result"></p>
+        <button id="restart-button" style="display:none;" onclick="restartQuiz()">Play Again</button>
+    </div>
+    <script>
+        const questions = [
+            {
+                question: "Which mammal is known to have the highest intelligence?",
+                options: ["Dog", "Dolphin", "Elephant", "Monkey"],
+                answer: 1,
+                hint: "This animal is famous for its ability to communicate and solve problems."
+            },
+            {
+                question: "What is the fastest land animal?",
+                options: ["Cheetah", "Lion", "Horse", "Greyhound"],
+                answer: 0,
+                hint: "It can reach speeds up to 75 mph (120 km/h)."
+            },
+            {
+                question: "Which bird is known for its ability to mimic human speech?",
+                options: ["Crow", "Parrot", "Eagle", "Owl"],
+                answer: 1,
+                hint: "This bird is often kept as a pet and can learn words."
+            },
+            {
+                question: "What is the largest species of shark?",
+                options: ["Great White Shark", "Hammerhead Shark", "Whale Shark", "Tiger Shark"],
+                answer: 2,
+                hint: "This shark is a gentle giant and feeds mostly on plankton."
+            },
+            {
+                question: "Which animal is known as the 'king of the jungle'?",
+                options: ["Tiger", "Leopard", "Lion", "Jaguar"],
+                answer: 2,
+                hint: "This animal is famous for its loud roar."
+            },
+            {
+                question: "What is the only mammal capable of true flight?",
+                options: ["Flying Squirrel", "Bat", "Eagle", "Hawk"],
+                answer: 1,
+                hint: "This animal uses echolocation to navigate at night."
+            },
+            {
+                question: "Which sea creature has three hearts?",
+                options: ["Dolphin", "Octopus", "Shark", "Whale"],
+                answer: 1,
+                hint: "This intelligent marine animal can change its color and texture."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        const quizContainer = document.getElementById("quiz");
+        const resultContainer = document.getElementById("result");
+        const restartButton = document.getElementById("restart-button");
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                const scorePercentage = (correctAnswers / questions.length) * 100;
+                if (scorePercentage > 80) {
+                    quizContainer.innerHTML = "<h2>Congratulations! You scored above 80%!</h2>";
+                } else {
+                    quizContainer.innerHTML = "<h2>You have completed the quiz!</h2>";
+                }
+                restartButton.style.display = "inline-block"; // Hiển thị nút chơi lại
+                return;
+            }
+            
+            const q = questions[currentQuestion];
+            quizContainer.innerHTML = `<h2>${q.question}</h2>` + q.options.map((opt, i) => 
+                `<button onclick="checkAnswer(${i})">${opt}</button>`).join("");
+        }
+
+        function checkAnswer(selectedIndex) {
+            const q = questions[currentQuestion];
+            if (selectedIndex === q.answer) {
+                resultContainer.textContent = "Correct!";
+                correctAnswers++;  // Increase the correct answers count
+            } else {
+                resultContainer.textContent = `Wrong! Hint: ${q.hint}`;
+            }
+            currentQuestion++;
+            setTimeout(() => {
+                resultContainer.textContent = "";
+                loadQuestion();
+            }, 1000);
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            correctAnswers = 0;
+            restartButton.style.display = "none"; // Ẩn nút chơi lại
+            loadQuestion();
+        }
+
+        document.addEventListener("DOMContentLoaded", loadQuestion);
+    </script>
+</body>
+</html>
